@@ -17,13 +17,22 @@ export class Game{
         // initialize game calling makedack functions and maybe initializing json score file
         this.deck = await shuffle(await makeDeck())
         // choose first dealer 
+        await this.chooseDealer()
         console.log(this.players)
-        this.chooseDealer()
+        // set json score file 
+
+        // lauch game eventually to be called outside the init method
+        this.lauch()
+    }
+
+    async lauch() {
+        this.fisrtTour()
+        // la suite plus tard
     }
 
     async chooseDealer() {
 
-        const dealer = await askUser("designate dealer among players : ")
+        const dealer = await askUser("designate dealer among players : ") //!\\ askuSer question to use as a python input() function !!! (await indispensable)
         let valid = false
         for (let i in this.players) {
             if (dealer == this.players[i].name) {
@@ -36,6 +45,20 @@ export class Game{
         }
     }
 
+    async fisrtTour() {
+        // function for first tour : each player plays on time
+        for (let i in this.players) {
+            
+            if (this.players[i].state=="ACTIVE"){ // could be DEALER at the begining
+                
+                let new_card = this.deck.pop()
+                console.log(new_card)
+                // apply card effect, see later ...
+                this.players[i].addCard(new_card)
+                // maybe apply card effect only here idk 
+            }
+        }
+    }
     async playerTurn() {
         // function for ONLY ONE player's turn 
         // → draw a card
@@ -52,7 +75,6 @@ export class Game{
         //   - flip 7 (7 different cards)
         // loop for a complete round (each player plays)
     }
-
 }
 
 // === TESTS ===
@@ -63,3 +85,5 @@ let elie = new Player("elie")
 
 let game = new Game([valentin, lea, elie])
 game.init()
+
+// working omg 
