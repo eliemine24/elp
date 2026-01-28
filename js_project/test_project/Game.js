@@ -28,21 +28,24 @@ export class Game{
 
     async lauch() {
         this.round_ = true
-        await this.fisrtTour()
+        await this.firstTour()
         let indice = this.dealer_indice // identify who is playing
-        
+        console.log(indice)
         while (this.round_==true){ // still need to review ending condition !!
             
-            indice += 1     // starting from not dealer
+            indice ++     // starting from not dealer
+            console.log(indice)
             if (indice>=this.players.length) {
                 indice = 0
             }
             // no need to verify dealers indice because already verifying player's state
+            console.log(this.players)
             if (this.players[indice].state=="ACTIVE") {
                 
                 await this.playersTurn(indice)
 
             }
+
         }
     }
 
@@ -56,13 +59,13 @@ export class Game{
                 if (dealer == this.players[i].name) {
                     valid = true
                     this.dealer_indice = i 
-                    this.players[i].state = "DEALER"
+                    this.players[i].dealer = true
                 }
             }
         }
     }
 
-    async fisrtTour() {
+    async firstTour() {
         // function for first tour : each player plays on time
         console.log("----- first tour ----- ")
         for (let i in this.players) {
@@ -96,15 +99,15 @@ export class Game{
         // asks players decision and updates their state
         let valid = false
         while (valid==false) {
-            const decision = await askUser("Do you want to Continue this Round ? (Y/n) : ")
+            const decision = await askUser("Do you want to continue this round ? (Y/n) : ")
             
             if (decision=="Y") {
-                console.log("yout choosed to continue")
+                console.log("You chose to continue")
                 valid = true
             }
 
             else if (decision=="n") {
-                console.log("you choosed to stay")
+                console.log("You chose to stay")
                 this.players[i].state = "STAYING"
                 valid = true
             }

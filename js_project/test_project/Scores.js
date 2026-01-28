@@ -34,6 +34,7 @@ export async function calculPlayerScore(player) {
 
 
 // === TESTS ===
+/*
 let lui = new Player("Gudule")
 let deck = await shuffle(await makeDeck()) // il faut atteeeendre
 
@@ -47,5 +48,5 @@ console.log(lui.hand)
 const score = await calculPlayerScore(lui)
 
 console.log(score)
-
+*/
 // works

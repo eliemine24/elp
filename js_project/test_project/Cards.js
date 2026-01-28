@@ -66,7 +66,7 @@ export async function shuffle(cards) {   // call : let deck = await shuffle(deck
 
 
 // === TESTS ===
-
+/*
 let deck = []
 
 deck = await makeDeck()
@@ -86,5 +86,5 @@ const drew = deck.pop()
 console.log(drew)
 withdraw.push(drew)
 console.log(withdraw)
-
+*/
 // seems to work
