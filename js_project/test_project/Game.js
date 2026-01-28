@@ -1,3 +1,4 @@
+import { askUser } from "./AskUser.js"
 import { Card, shuffle, makeDeck } from "./Cards.js"
 import { Player } from "./Player.js"
 
@@ -15,7 +16,24 @@ export class Game{
     async init() {
         // initialize game calling makedack functions and maybe initializing json score file
         this.deck = await shuffle(await makeDeck())
+        // choose first dealer 
+        console.log(this.players)
+        this.chooseDealer()
+    }
 
+    async chooseDealer() {
+
+        const dealer = await askUser("designate dealer among players : ")
+        let valid = false
+        for (let i in this.players) {
+            if (dealer == this.players[i].name) {
+                valid = true
+                this.players[i].state = "DEALER"
+            }
+        }
+        if (valid==false) {
+            this.chooseDealer()
+        }
     }
 
     async playerTurn() {
@@ -37,3 +55,11 @@ export class Game{
 
 }
 
+// === TESTS ===
+
+let valentin = new Player("valentin")
+let lea = new Player("lea")
+let elie = new Player("elie")
+
+let game = new Game([valentin, lea, elie])
+game.init()
