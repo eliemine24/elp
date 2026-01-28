@@ -6,6 +6,10 @@ export class Player {
     this.score = 0;
   }
 
+  addCard(card){
+    this.hand.push(card)
+  }
+  
   quitRound() {
     this.active = false;
   }
