@@ -29,16 +29,25 @@ export class Deck {
       this.cards.push(Card("flip three", "action"));
       this.cards.push(Card("second chance", "action"));
     }
-}
+}}
 
-  shuffle() {}
+export async function shuffle(cards) {   // let deck = await shuffle(myCards);
+    let myShuffledCards = [];
+    while (cards.length > 0) {
+        await new Promise(resolve => setTimeout(resolve, 0));
+
+        let i = Math.floor(Math.random() * cards.length);
+        let n = cards.splice(i, 1).pop();
+        myShuffledCards.push(n);
+    }
+    return myShuffledCards;
+}
   
-  draw() {
+export function draw() {
     return this.cards.pop()
   }
   
-  discard(card) {
+export function discard(card) {
     // discard one card 
     this.discardPile.push(card)
   }
-}
