@@ -1,37 +1,34 @@
 import { Card } from "./Card.js"
 
-export class Deck {
-  constructor(cards = []) {
-    this.cards = cards;
-    this.makedeck()
-    this.discardPile = [];
+export async function makedeck() {
+  // returns a full deck as a list of cards 
+  const cards = []
+  cards.push(new Card(0))
+  
+  for (let i=1; i<=12; i ++){
+    for (let j=1; j<=i; j++) {
+      cards.push(new Card(i));
+    }
   }
 
-  makedeck() {
-    // complete deck with numbers and special cards 
-    this.cards.push(new Card(0))
-    
-    for (let i=1; i<=12; i ++){
-      for (let j=1; j<=i; j++) {
-        this.cards.push(new Card(i));
-      }
-    }
+  cards.push(new Card("x2", "modifier"));
+  cards.push(new Card(2, "modifier"));
+  cards.push(new Card(4, "modifier"));
+  cards.push(new Card(6, "modifier"));
+  cards.push(new Card(8, "modifier"));
+  cards.push(new Card(10, "modifier"));
 
-    this.cards.push(new Card("x2", "modifier"));
-    this.cards.push(new Card(2, "modifier"));
-    this.cards.push(new Card(4, "modifier"));
-    this.cards.push(new Card(6, "modifier"));
-    this.cards.push(new Card(8, "modifier"));
-    this.cards.push(new Card(10, "modifier"));
-
-    for (let k=1; k<=3; k++){
-      this.cards.push(new Card("freeze", "action"));
-      this.cards.push(new Card("flip three", "action"));
-      this.cards.push(new Card("second chance", "action"));
-    }
-}}
+  for (let k=1; k<=3; k++){
+    cards.push(new Card("freeze", "action"));
+    cards.push(new Card("flip three", "action"));
+    cards.push(new Card("second chance", "action"));
+  
+  return cards
+  }
+}
 
 export async function shuffle(cards) {   // let deck = await shuffle(myCards);
+  // shuffle deck, returns a list of cards
     let myShuffledCards = [];
     while (cards.length > 0) {
         await new Promise(resolve => setTimeout(resolve, 0));
@@ -44,10 +41,17 @@ export async function shuffle(cards) {   // let deck = await shuffle(myCards);
 }
   
 export function draw() {
-    return this.cards.pop()
+    return cards.pop()
   }
   
 export function discard(card) {
     // discard one card 
-    this.discardPile.push(card)
+    discardPile.push(card)
   }
+
+
+
+// Test
+let deck = await makedeck()
+deck = await shuffle(deck)
+console.log(deck)
