@@ -8,7 +8,7 @@ export class Player {
   constructor(name="unnamed") {
     this.name = name;
     this.hand = [];
-    this.state = "ACTIVE";  // can also be "STAYING" or "OUT"
+    this.state = "ACTIVE";  // can also be "STAYING" or "OUT" or "DEALER"
     this.score = 0;
   }
 
