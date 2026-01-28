@@ -9,25 +9,25 @@ export class Deck {
 
   makedeck() {
     // complete deck with numbers and special cards 
-    this.cards.push(Card(0))
+    this.cards.push(new Card(0))
     
-    for (i=1; i<=12; i ++){
-      for (j=1; j<=i; j++) {
-        this.cards.push(Card(i));
+    for (let i=1; i<=12; i ++){
+      for (let j=1; j<=i; j++) {
+        this.cards.push(new Card(i));
       }
     }
 
-    this.cards.push(Card("x2", "modifier"));
-    this.cards.push(Card(2, "modifier"));
-    this.cards.push(Card(4, "modifier"));
-    this.cards.push(Card(6, "modifier"));
-    this.cards.push(Card(8, "modifier"));
-    this.cards.push(Card(10, "modifier"));
+    this.cards.push(new Card("x2", "modifier"));
+    this.cards.push(new Card(2, "modifier"));
+    this.cards.push(new Card(4, "modifier"));
+    this.cards.push(new Card(6, "modifier"));
+    this.cards.push(new Card(8, "modifier"));
+    this.cards.push(new Card(10, "modifier"));
 
-    for (k=1; k<=3; k++){
-      this.cards.push(Card("freeze", "action"));
-      this.cards.push(Card("flip three", "action"));
-      this.cards.push(Card("second chance", "action"));
+    for (let k=1; k<=3; k++){
+      this.cards.push(new Card("freeze", "action"));
+      this.cards.push(new Card("flip three", "action"));
+      this.cards.push(new Card("second chance", "action"));
     }
 }
 
