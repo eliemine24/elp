@@ -1,10 +1,12 @@
 let myCards = [0, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, "special"];
 
-function shuffle(cards) {
+async function shuffle(cards) {
     let myShuffledCards = [];
     while (cards.length > 0) {
-        i = Math.floor(Math.random() * cards.length);
-        n = cards.splice(i, 1).pop();
+        await new Promise(resolve => setTimeout(resolve, 0));
+
+        let i = Math.floor(Math.random() * cards.length);
+        let n = cards.splice(i, 1).pop();
         myShuffledCards.push(n);
     }
     return myShuffledCards;
@@ -19,5 +21,5 @@ const drawCard = function() {
 
 
 console.log(myCards);
-deck = shuffle(myCards);
+let deck = await shuffle(myCards);
 console.log(deck);
