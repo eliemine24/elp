@@ -1,4 +1,4 @@
-const readline = require('readline');
+import readline from 'readline';
 
 // Create an interface for input and output
 const rl = readline.createInterface({
@@ -13,3 +13,7 @@ const askQuestion = (question) => {
     });
   });
 };
+
+const response  = await askQuestion("question ? : ");
+
+console.log(response)

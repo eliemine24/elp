@@ -1,18 +1,25 @@
-import { applyCardEffect } from "../rules/actions";
-import shuffle from Deck.js
-import hasDuplicate from compareCards.js
+//import "../rules/actions.js";
+import "../cards/Deck.js";
+import readline from 'readline';
 
-const readline = require("readline");
-
+// Create an interface for input and output
 const rl = readline.createInterface({
   input: process.stdin,
-  output: process.stdout,
+  output: process.stdout
 });
+
+const Question = (question) => {
+  return new Promise((resolve) => {
+    rl.question(question, (answer) => {
+      resolve(answer);
+    });
+  });
+};
 
 export async function playTurn(player, deck) {
   if (player.state !== "ACTIVE") return;
 
-  const choice = askPlayerChoice();
+  const choice = await askPlayerChoice();
 
   if (choice === 'leave') {
     player.state = "STAYING";
@@ -36,20 +43,18 @@ export async function playTurn(player, deck) {
 
   // Appliquer les effets spéciaux s'il y en a
   if (card.type !== 'number') {
-    applyCardEffect(player, card)
+    //applyCardEffect(player, card)
   }
 }
 
-function askPlayerChoice(){
+async function askPlayerChoice(){
   // demander son actoin au joueur (rester/quitter la manche)
-  const choice = prompt("Choose action (stay/leave) :");
-    
-  if (choice=="stay"){
-      return true;
-      }
-  elif (choice=="leave");{
-    return false;
-    } 
+  
+  const choice = await Question("Do you want to stay in game (Y/n)");
+
+  if (choice=="Y") return true;
+  if (choice=="n") return false;
+  else return await askPlayerChoice();
 }
 
 const choice = askPlayerChoice()

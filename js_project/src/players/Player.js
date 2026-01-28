@@ -10,4 +10,3 @@ export class Player {
     this.hand.push(card)
   }
 }
-// test comment
