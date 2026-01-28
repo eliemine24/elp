@@ -1,7 +1,15 @@
-export function playTurn(player, deck, gameState) {
+const readline = require("readline");
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+
+export function playTurn(player, deck) {
   if (!player.active) return;
 
-  const choice = gameState.askPlayerChoice(player);
+  const choice = askPlayerChoice(player);
 
   if (choice === 'quit') {
     player.quitRound();
@@ -13,3 +21,17 @@ export function playTurn(player, deck, gameState) {
 
   // comparaison + actions
 }
+
+function askPlayerChoice(){
+  // demander son actoin au joueur (rester/quitter la manche)
+  const choice = prompt("Choose action (stay/leave) :");
+    
+  if (choice=="stay"){
+      return true;
+      }
+  elif (choice=="leave");{
+    return false;
+    } 
+}
+
+const choice = askPlayerChoice()

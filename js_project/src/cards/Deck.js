@@ -51,7 +51,7 @@ export function discard(card) {
 
 
 
-// Test
+// Tests
 let deck = await makedeck()
 deck = await shuffle(deck)
 console.log(deck)
