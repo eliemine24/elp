@@ -30,16 +30,16 @@ export class Game{
         this.round_ = true
         await this.firstTour()
         let indice = this.dealer_indice // identify who is playing
-        console.log(indice)
+
         while (this.round_==true){ // still need to review ending condition !!
             
             indice ++     // starting from not dealer
-            console.log(indice)
+
             if (indice>=this.players.length) {
                 indice = 0
             }
             // no need to verify dealers indice because already verifying player's state
-            console.log(this.players)
+            
             if (this.players[indice].state=="ACTIVE") {
                 
                 await this.playersTurn(indice)
@@ -69,30 +69,46 @@ export class Game{
         // function for first tour : each player plays on time
         console.log("----- first tour ----- ")
         for (let i in this.players) {
-            
-            if (this.players[i].state=="ACTIVE"){ // could be DEALER at the begining
-                
-                let new_card = this.deck.pop()
-                console.log(this.players[i].name, "drew :", new_card)
-                // apply card effect, see later ...
-                this.players[i].addCard(new_card)
-                // maybe apply card effect only here idk 
+
+            let new_card = this.deck.pop()
+            console.log(this.players[i].name, "drew :", new_card)
+            // apply card effect, see later ...
+            this.players[i].addCard(new_card)
+            // maybe apply card effect only here idk 
             }
         }
-    }
     
     async playersTurn(i) {
         // function for ONLY ONE player's turn 
         console.log("-----", this.players[i].name, "'s turn -----")
-        // → draw a card
-        let new_card = this.deck.pop()
-        console.log("You drew :", new_card)
-
-        // → apply card effect if need
-        //      → compare with previous card
-        //      → apply effect if needed
         // → player chooses if stay or continues
         await this.StayOrContinue(i)
+        if (this.players[i].state == "ACTIVE") {
+            // shuffle if empty deck
+            if (this.deck.length <= 0) {
+                let shuffledCards = await shuffle(this.deck);
+                this.deck = shuffledCards;
+            }
+            // → draw a card
+            let new_card = this.deck.pop()
+            console.log("You drew :", new_card)
+            // → compare with previous card
+            if (await this.hasDuplicate(this.players[i].hand, new_card)) {
+                // add to hand
+                this.players[i].addCard(new_card)
+                this.players[i].state = "OUT";
+                console.log("You are out for this round")
+            }
+            else {
+                // add to hand
+                this.players[i].addCard(new_card)
+                // → apply effect if needed
+                if (new_card.type !== 'number') {
+                //applyCardEffect(player, card)
+                }
+            }
+            console.log(this.players)
+        }
     }
 
     async StayOrContinue(i) {
@@ -113,6 +129,19 @@ export class Game{
             }
         }
     }
+
+    async hasDuplicate(hand, card) {
+        let dupli = false
+        for (let i in hand) {
+            if (card.value == hand[i].value) {
+                dupli = true
+            }
+        }
+        return dupli
+    }
+    /*async hasDuplicate(hand, card) {
+        return hand.some(c => c.value === card.value);
+    }  */
 }
 
 // === TESTS ===
