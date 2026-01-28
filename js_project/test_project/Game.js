@@ -46,6 +46,10 @@ export class Game{
 
             }
 
+            if (await this.checkEnd()) {
+                this.round_ = false
+                console.log("----- end of the round -----")
+            }
         }
     }
 
@@ -128,6 +132,15 @@ export class Game{
                 valid = true
             }
         }
+    }
+
+    async checkEnd() {
+        for (let p in this.players) {
+            if (this.players[p].state == "ACTIVE") {
+                return false
+            }
+        }
+        return true
     }
 
     async hasDuplicate(hand, card) {
