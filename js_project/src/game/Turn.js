@@ -2,7 +2,7 @@
 import "../cards/Deck.js";
 import readline from 'readline';
 
-// Create an interface for input and output
+// ===== const for user's input =====
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
@@ -15,6 +15,8 @@ const Question = (question) => {
     });
   });
 };
+// ===================================
+
 
 export async function playTurn(player, deck) {
   if (player.state !== "ACTIVE") return;
@@ -56,5 +58,3 @@ async function askPlayerChoice(){
   if (choice=="n") return false;
   else return await askPlayerChoice();
 }
-
-const choice = askPlayerChoice()
