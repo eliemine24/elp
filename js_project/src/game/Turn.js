@@ -58,5 +58,3 @@ async function askPlayerChoice(){
   if (choice=="n") return false;
   else return await askPlayerChoice();
 }
-
-const choice = askPlayerChoice()
