@@ -40,10 +40,6 @@ export async function shuffle(cards) {   // let deck = await shuffle(myCards);
     return myShuffledCards;
 }
   
-export function draw() {
-    return cards.pop()
-  }
-  
 export function discard(card) {
     // discard one card 
     discardPile.push(card)

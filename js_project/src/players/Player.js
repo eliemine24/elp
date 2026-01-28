@@ -9,8 +9,4 @@ export class Player {
   addCard(card){
     this.hand.push(card)
   }
-  
-  quitRound() {
-    this.active = false;
-  }
 }

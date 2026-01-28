@@ -1,15 +1,34 @@
-export function playTurn(player, deck, gameState) {
-  if (!player.active) return;
+import { applyCardEffect } from "../rules/actions";
+import shuffle from Deck.js
+import hasDuplicate from compareCards.js
 
-  const choice = gameState.askPlayerChoice(player);
+export async function playTurn(player, deck) {
+  if (player.state !== "ACTIVE") return;
 
-  if (choice === 'quit') {
-    player.quitRound();
+  const choice = askPlayerChoice();
+
+  if (choice === 'leave') {
+    player.state = "STAYING";
     return;
   }
 
-  deck.reshuffleIfNeeded();
-  const card = deck.draw();
+  // Mélanger si il n'y a plus de cartes
+  if (deck.cards.length <= 0) {
+    let shuffledCards = await shuffle(deck.cards);
+    deck.cards = shuffledCards;
+  }
 
-  // comparaison + actions
+  // Piocher une carte
+  const card = deck.pop()
+
+  // Vérifier si le joueur est éliminé
+  if (hasDuplicate(player.hand, card)) {
+    player.state = "OUT";
+    return;
+  }
+
+  // Appliquer les effets spéciaux s'il y en a
+  if (card.type !== 'number') {
+    applyCardEffect(player, card)
+  }
 }
