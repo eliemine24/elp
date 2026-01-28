@@ -1,12 +1,12 @@
-import {Deck, shuffle} from "../cards/Deck.js"
+import {makedeck, shuffle} from "../cards/Deck.js"
 import { Player } from "../players/Player.js";
 import { applyCardEffect } from "../rules/actions.js";
 
 
 export class Game {
-  constructor(players=[], deck = []) {
+  constructor(players=[]) {
     this.players = players;
-    this.deck = new Deck();
+    this.deck = makedeck()
   }
 
   start() {
