@@ -26,9 +26,9 @@ export class Game{
         // set json score file 
 
         // lauch game eventually to be called outside the init method
-        await this.round()
+        await this.game()
     }
-/*
+
     async game() {
         this.game_ = true
         while (this.game_) {
@@ -37,7 +37,7 @@ export class Game{
         }
         console.log("----- end of the game -----")
     }
-*/
+
     async round() {
         this.round_ = true
         await this.firstTour()
@@ -174,9 +174,11 @@ export class Game{
         for (let i in this.players) {
             // calcul scores players
             this.players[i].score += await calculPlayerScore(this.players[i])
+            console.log(this.players[i].name, " : ", this.players[i].score)
             // store hand in json file
             // free player's hand
             await this.discardHand(this.players[i].hand)
+            this.players[i].state = "ACTIVE"
         }
     }
 
@@ -189,11 +191,10 @@ export class Game{
 
     async checkGameEnd() {
         for (let i in this.players) {
-            if (this.players[i] >= 200) {
-                return true
+            if (this.players[i].score >= 200) {
+                this.game_ = false
             }
         }
-        return false
     }
 }
 

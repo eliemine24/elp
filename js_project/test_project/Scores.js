@@ -10,7 +10,7 @@ export async function calculPlayerScore(player) {
     }
 
     const hand = player.hand
-    console.log(hand)
+
     let score = 0
     let specialScore = 0
     let multiplier = 1
@@ -18,7 +18,7 @@ export async function calculPlayerScore(player) {
     for (let i in hand){
         
         let card = hand[i]
-        console.log(card)
+
         if (card.type=="number") {
             score += card.value
         }
