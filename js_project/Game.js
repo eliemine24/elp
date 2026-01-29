@@ -2,6 +2,7 @@ import { askUser } from "./AskUser.js"
 import { Card, shuffle, makeDeck } from "./Cards.js"
 import { Player } from "./Player.js"
 import { calculPlayerScore } from "./Scores.js"
+import { applyCardEffect, countNumberedCards } from "./Actions.js"
 
 // === Gaming functions ===
 // trying to implement game as a class
@@ -95,16 +96,30 @@ export class Game{
             }
             let new_card = this.deck.pop()
             console.log(`${this.players[i].name} drew ${new_card.value} (${new_card.type})`)
-            // apply card effect, see later ...
+            
+            // Add card to hand
             this.players[i].addCard(new_card)
-            // maybe apply card effect only here idk 
+            
+            // Apply card effect if it's an action card
+            if (new_card.type === 'action') {
+                await applyCardEffect(this, this.players[i], new_card)
             }
+            // Apply bonus cards during score calculation
         }
+    }
     
     async playersTurn(i) {
         // function for ONLY ONE player's turn 
         console.log("-----", this.players[i].name, "'s turn -----")
-        // → player chooses if stay or continues
+        
+        // Check if player has 7 numbered cards (winning condition)
+        if (countNumberedCards(this.players[i].hand) >= 7) {
+            console.log(`${this.players[i].name} has 7 numbered cards! They stay.`);
+            this.players[i].state = "STAYING";
+            return;
+        }
+        
+        // â†’ player chooses if stay or continues
         await this.StayOrContinue(i)
 
         if (this.players[i].state == "ACTIVE") {
@@ -113,24 +128,35 @@ export class Game{
                 this.deck = await shuffle(this.discardPile);
                 this.discardPile = []
             }
-            // → draw a card
+            // â†’ draw a card
             let new_card = this.deck.pop()
             console.log(`You drew : ${new_card.value} (${new_card.type})`)
             
-            // → compare with previous card
-            if (await this.hasDuplicate(this.players[i].hand, new_card)) {
-                // add to hand
-                this.players[i].addCard(new_card)
-                this.players[i].state = "OUT";
-                console.log("You are out for this round")
-            }
-            else {
-                // add to hand
-                this.players[i].addCard(new_card)
-                // → apply effect if needed
-                if (new_card.type !== 'number') {
-                //applyCardEffect(player, card)
+            // â†’ compare with previous card (check for duplicates)
+            // Special handling for Second Chance - checked within applyCardEffect
+            if (new_card.type !== "action" || new_card.value !== "second chance") {
+                if (await this.hasDuplicate(this.players[i].hand, new_card)) {
+                    // add to hand
+                    this.players[i].addCard(new_card)
+                    this.players[i].state = "OUT";
+                    console.log("You are out for this round")
+                    return;
                 }
+            }
+            
+            // Add to hand
+            this.players[i].addCard(new_card)
+            
+            // â†’ apply effect if it's an action or bonus card
+            if (new_card.type === 'action') {
+                await applyCardEffect(this, this.players[i], new_card)
+            }
+            // Bonus cards are handled during score calculation
+            
+            // Check again if player has 7 numbered cards after drawing
+            if (countNumberedCards(this.players[i].hand) >= 7) {
+                console.log(`${this.players[i].name} now has 7 numbered cards! They stay.`);
+                this.players[i].state = "STAYING";
             }
         }
     }
@@ -142,8 +168,14 @@ export class Game{
             // show players hand
             console.log("Hand :")
             for (let k in this.players[i].hand) {
-                console.log(this.players[i].hand[k].value, "|", this.players[i].hand[k].type)
+                const card = this.players[i].hand[k];
+                const marker = card.value === "second chance" ? " [SECOND CHANCE]" : "";
+                console.log(`  ${card.value} | ${card.type}${marker}`)
             }
+            
+            // Show numbered card count
+            const numberedCount = countNumberedCards(this.players[i].hand);
+            console.log(`Numbered cards: ${numberedCount}/7`);
 
             const decision = await askUser("Do you want to continue this round ? (Y/n) : ")
             
@@ -163,6 +195,11 @@ export class Game{
     async hasDuplicate(hand, card) {
         let dupli = false
         for (let i in hand) {
+            // Don't count Second Chance cards as duplicates with themselves
+            if (card.value === "second chance" && hand[i].value === "second chance") {
+                continue;
+            }
+            
             if (card.value == hand[i].value) {
                 dupli = true
             }
@@ -187,10 +224,18 @@ export class Game{
             this.players[i].score += await calculPlayerScore(this.players[i])
             console.log(this.players[i].name, ":", this.players[i].score)
             // store hand in json file
-            // free player's hand
+            // free player's hand (including Second Chance cards that weren't used)
             await this.discardHand(this.players[i].hand)
             this.players[i].state = "ACTIVE"
+            
+            // Move to next dealer
+            this.players[i].dealer = false;
         }
+        
+        // Next dealer
+        this.dealer_indice = (this.dealer_indice + 1) % this.players.length;
+        this.players[this.dealer_indice].dealer = true;
+        console.log(`Next dealer: ${this.players[this.dealer_indice].name}`);
     }
 
     async discardHand(hand) { 
@@ -204,6 +249,7 @@ export class Game{
         for (let i in this.players) {
             if (this.players[i].score >= 200) {
                 this.game_ = false
+                console.log(`\n${this.players[i].name} wins the game with ${this.players[i].score} points!`);
             }
         }
     }
