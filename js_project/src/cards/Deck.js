@@ -39,13 +39,6 @@ export async function shuffle(cards) {   // let deck = await shuffle(myCards);
     }
     return myShuffledCards;
 }
-  
-export function discard(card) {
-    // discard one card 
-    discardPile.push(card)
-  }
-
-
 
 // Tests
 let deck = await makedeck()

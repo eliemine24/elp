@@ -4,6 +4,8 @@ lien vers [npm](https://www.npmjs.com/)
 
 lien vers [le sujet](https://github.com/sfrenot/javascript/tree/master/projet4)
 
+lien vers [les règles du jeu](https://media.play-in.com/pdf/rules_games/flip_7_fr.pdf)
+
 **Todooo**
 
 - No html pas de carte qui flip (la tuile)

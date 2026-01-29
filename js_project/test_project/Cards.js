@@ -29,11 +29,11 @@ export async function makeDeck() {
 
   // bonus 
   cards.push(new Card("x2", "bonus"));
-  cards.push(new Card(2, "bonus"));
-  cards.push(new Card(4, "bonus"));
-  cards.push(new Card(6, "bonus"));
-  cards.push(new Card(8, "bonus"));
-  cards.push(new Card(10, "bonus"));
+  cards.push(new Card("+2", "bonus"));
+  cards.push(new Card("+4", "bonus"));
+  cards.push(new Card("+6", "bonus"));
+  cards.push(new Card("+8", "bonus"));
+  cards.push(new Card("+10", "bonus"));
 
   // action
   for (let k=1; k<=3; k++){

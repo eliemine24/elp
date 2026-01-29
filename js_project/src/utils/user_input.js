@@ -6,7 +6,7 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-const askQuestion = (question) => {
+export const askQuestion = (question) => {
   return new Promise((resolve) => {
     rl.question(question, (answer) => {
       resolve(answer);

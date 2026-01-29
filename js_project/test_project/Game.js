@@ -23,6 +23,11 @@ export class Game{
         this.deck = await shuffle(await makeDeck())
         // choose first dealer 
         await this.chooseDealer()
+        // show game players
+        console.log("---- Starting Game ---- \nPLayers :")
+        for (let i in this.players) {
+            console.log(` player ${i} : ${this.players[i].name} (${this.players[i].state})`)
+        }
         // set json score file 
 
         // lauch game eventually to be called outside the init method
@@ -51,7 +56,6 @@ export class Game{
                 indice = 0
             }
             // no need to verify dealers indice because already verifying player's state
-            
             if (this.players[indice].state=="ACTIVE") {
                 
                 await this.playersTurn(indice)
@@ -90,7 +94,7 @@ export class Game{
                 this.discardPile = []
             }
             let new_card = this.deck.pop()
-            console.log(this.players[i].name, "drew :", new_card)
+            console.log(`${this.players[i].name} drew ${new_card.value} (${new_card.type})`)
             // apply card effect, see later ...
             this.players[i].addCard(new_card)
             // maybe apply card effect only here idk 
@@ -102,6 +106,7 @@ export class Game{
         console.log("-----", this.players[i].name, "'s turn -----")
         // → player chooses if stay or continues
         await this.StayOrContinue(i)
+
         if (this.players[i].state == "ACTIVE") {
             // shuffle if empty deck
             if (this.deck.length <= 0) {
@@ -110,7 +115,8 @@ export class Game{
             }
             // → draw a card
             let new_card = this.deck.pop()
-            console.log("You drew :", new_card)
+            console.log(`You drew : ${new_card.value} (${new_card.type})`)
+            
             // → compare with previous card
             if (await this.hasDuplicate(this.players[i].hand, new_card)) {
                 // add to hand
@@ -126,7 +132,6 @@ export class Game{
                 //applyCardEffect(player, card)
                 }
             }
-            console.log(this.players)
         }
     }
 
@@ -134,6 +139,12 @@ export class Game{
         // asks players decision and updates their state
         let valid = false
         while (valid==false) {
+            // show players hand
+            console.log("Hand :")
+            for (let k in this.players[i].hand) {
+                console.log(this.players[i].hand[k].value, "|", this.players[i].hand[k].type)
+            }
+
             const decision = await askUser("Do you want to continue this round ? (Y/n) : ")
             
             if (decision=="Y") {
@@ -174,7 +185,7 @@ export class Game{
         for (let i in this.players) {
             // calcul scores players
             this.players[i].score += await calculPlayerScore(this.players[i])
-            console.log(this.players[i].name, " : ", this.players[i].score)
+            console.log(this.players[i].name, ":", this.players[i].score)
             // store hand in json file
             // free player's hand
             await this.discardHand(this.players[i].hand)

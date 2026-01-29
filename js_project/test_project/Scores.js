@@ -12,7 +12,7 @@ export async function calculPlayerScore(player) {
     const hand = player.hand
 
     let score = 0
-    let specialScore = 0
+    let bonus = 0
     let multiplier = 1
 
     for (let i in hand){
@@ -25,13 +25,17 @@ export async function calculPlayerScore(player) {
 
         else if (card.type=="bonus") {
             if (card.value!="x2") {
-                specialScore += card.value
+                if (card.value=="+2") {bonus += 2}
+                if (card.value=="+4") {bonus += 4}
+                if (card.value=="+6") {bonus += 6}
+                if (card.value=="+8") {bonus += 8}
+                if (card.value=="+10") {bonus += 10}
             }
             else multiplier *= 2
         }
         // if "action" do nothing
     }
-    return (score*multiplier + specialScore)
+    return (score*multiplier + bonus)
 }
 
 
