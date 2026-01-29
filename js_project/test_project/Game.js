@@ -1,6 +1,7 @@
 import { askUser } from "./AskUser.js"
 import { Card, shuffle, makeDeck } from "./Cards.js"
 import { Player } from "./Player.js"
+import { calculPlayerScore } from "./Scores.js"
 
 // === Gaming functions ===
 // trying to implement game as a class
@@ -10,8 +11,10 @@ export class Game{
     constructor(players, scorefilename) {
         this.players = players
         this.deck = []
+        this.discardPile = []
         this.file_name = scorefilename
         this.round_ = false
+        this.game_ = false
         this.dealer_indice = 0
     }
 
@@ -23,10 +26,19 @@ export class Game{
         // set json score file 
 
         // lauch game eventually to be called outside the init method
-        this.lauch()
+        await this.round()
     }
-
-    async lauch() {
+/*
+    async game() {
+        this.game_ = true
+        while (this.game_) {
+            await this.round()
+            await this.checkGameEnd()
+        }
+        console.log("----- end of the game -----")
+    }
+*/
+    async round() {
         this.round_ = true
         await this.firstTour()
         let indice = this.dealer_indice // identify who is playing
@@ -46,9 +58,8 @@ export class Game{
 
             }
 
-            if (await this.checkEnd()) {
-                this.round_ = false
-                console.log("----- end of the round -----")
+            if (await this.checkRoundEnd()) {
+                await this.roundEnd()
             }
         }
     }
@@ -73,7 +84,11 @@ export class Game{
         // function for first tour : each player plays on time
         console.log("----- first tour ----- ")
         for (let i in this.players) {
-
+            // shuffle if empty deck
+            if (this.deck.length <= 0) {
+                this.deck = await shuffle(this.discardPile);
+                this.discardPile = []
+            }
             let new_card = this.deck.pop()
             console.log(this.players[i].name, "drew :", new_card)
             // apply card effect, see later ...
@@ -90,8 +105,8 @@ export class Game{
         if (this.players[i].state == "ACTIVE") {
             // shuffle if empty deck
             if (this.deck.length <= 0) {
-                let shuffledCards = await shuffle(this.deck);
-                this.deck = shuffledCards;
+                this.deck = await shuffle(this.discardPile);
+                this.discardPile = []
             }
             // → draw a card
             let new_card = this.deck.pop()
@@ -134,15 +149,6 @@ export class Game{
         }
     }
 
-    async checkEnd() {
-        for (let p in this.players) {
-            if (this.players[p].state == "ACTIVE") {
-                return false
-            }
-        }
-        return true
-    }
-
     async hasDuplicate(hand, card) {
         let dupli = false
         for (let i in hand) {
@@ -152,9 +158,43 @@ export class Game{
         }
         return dupli
     }
-    /*async hasDuplicate(hand, card) {
-        return hand.some(c => c.value === card.value);
-    }  */
+
+    async checkRoundEnd() {
+        for (let p in this.players) {
+            if (this.players[p].state == "ACTIVE") {
+                return false
+            }
+        }
+        return true
+    }
+    
+    async roundEnd() {
+        this.round_ = false
+        console.log("----- end of the round -----")
+        for (let i in this.players) {
+            // calcul scores players
+            this.players[i].score += await calculPlayerScore(this.players[i])
+            // store hand in json file
+            // free player's hand
+            await this.discardHand(this.players[i].hand)
+        }
+    }
+
+    async discardHand(hand) { 
+        while (hand.length > 0) {
+            let cardToThrow = hand.pop()
+            this.discardPile.push(cardToThrow)
+        }
+    }
+
+    async checkGameEnd() {
+        for (let i in this.players) {
+            if (this.players[i] >= 200) {
+                return true
+            }
+        }
+        return false
+    }
 }
 
 // === TESTS ===
