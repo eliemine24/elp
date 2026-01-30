@@ -1,0 +1,33 @@
+{
+  "manche 1": {
+    "valentin": {
+      "score": 0,
+      "hand": [
+        1,
+        "+6",
+        7,
+        8,
+        8
+      ]
+    },
+    "lea": {
+      "score": 18,
+      "hand": [
+        9,
+        "second chance",
+        5,
+        4
+      ]
+    },
+    "elie": {
+      "score": 41,
+      "hand": [
+        8,
+        "second chance",
+        12,
+        10,
+        11
+      ]
+    }
+  }
+}
