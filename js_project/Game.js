@@ -22,13 +22,13 @@ export class Game{
     async init() {
         // initialize game calling makedack functions and maybe initializing json score file
         this.deck = await shuffle(await makeDeck())
-        // choose first dealer 
-        await this.chooseDealer()
         // show game players
         console.log("---- Starting Game ---- \nPLayers :")
         for (let i in this.players) {
             console.log(` player ${i} : ${this.players[i].name} (${this.players[i].state})`)
         }
+        // choose first dealer 
+        await this.chooseDealer()
         // set json score file 
 
         // lauch game eventually to be called outside the init method

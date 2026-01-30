@@ -10,11 +10,12 @@ import (
 	"go_project/matrix"
 	"go_project/perlin"
 	"sync"
+	"time"
 )
 
 const (
-	MAPSIZE      = 100             // taille des maps élémentaires
-	RATIO        = 16              // nombre de maps élémentaires du un coté de map finale ATTENTION C'EST O(N^2) DONC ÇA PLANTE TRES VITE
+	MAPSIZE      = 200             // taille des maps élémentaires
+	RATIO        = 8               // nombre de maps élémentaires du un coté de map finale ATTENTION C'EST O(N^2) DONC ÇA PLANTE TRES VITE
 	FINALMAPSIZE = MAPSIZE * RATIO // taille de la map finale
 	NBMAPS       = RATIO * RATIO   // nombre de maps élémentaires sur la map finale
 	AVGWIDE      = 40              // largeur du moyennage
@@ -22,6 +23,7 @@ const (
 )
 
 func main() {
+	debut := time.Now()
 	// Canal pour récup les maps elementaires générées par perlin
 	out := make(chan [][]float64)
 
@@ -114,7 +116,10 @@ func main() {
 
 	}
 	wgy.Wait()
+	fin := time.Now()
 
+	fmt.Println(fin.Sub(debut))
 	// afficher la matrice finie avec display.showmat
+	fmt.Println("--- rendu image ---")
 	display.ShowMat(FINALMAP, MAPSIZE)
 }
