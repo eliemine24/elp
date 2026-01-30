@@ -1,5 +1,6 @@
 import { Card, shuffle, makeDeck } from "./Cards.js"
 import { Player } from "./Player.js"
+import { writeFile } from "fs"
 
 // === SCORE COUNTING METHODS ===
 
@@ -38,24 +39,66 @@ export async function calculPlayerScore(player) {
     return (score*multiplier + bonus)
 }
 
+export async function registerRound(register, players) {
+    // saves round info in a {}
+    let manche = {}
+    for (let i in players) {
+        manche[players[i].name] = {}
+        manche[players[i].name]["score"] = players[i].score
+        manche[players[i].name]["hand"] = []
+        for (let j in players[i].hand) {
+            manche[players[i].name]["hand"].push(players[i].hand[j].value)
+        }
+    }
+    register["manche"] = manche
+    return register
+}
 
+
+export async function writejson(register, title="unnamed.json") {
+    // takes a dict as argument and write it in a <title> json file
+    
+    const data = JSON.stringify(register, null, 2);
+    
+    writeFile(title, data, 'utf8', (err) => {
+        if (err) {
+            console.error('Error writing to file', err)
+        } else {
+            console.log(`Data written to file ${title}`)
+        }
+    })
+}
 
 
 // === TESTS ===
 /*
 let lui = new Player("Gudule")
+let elle = new Player("Françoise")
+let iel = new Player("René")
+let players = [elle, lui, iel]
 let deck = await shuffle(await makeDeck()) // il faut atteeeendre
 
 
 for (let i=0; i<7; i++) {
     lui.addCard(deck.pop())
 }
-lui.addCard(new Card("x2", "bonus"))
-lui.addCard(new Card(4, "bonus"))
-console.log(lui.hand)
+for (let i=0; i<7; i++) {
+    elle.addCard(deck.pop())
+}
+for (let i=0; i<7; i++) {
+    iel.addCard(deck.pop())
+}
 
-const score = await calculPlayerScore(lui)
+console.log(lui)
+console.log(elle)
+console.log(iel)
 
-console.log(score)
+elle.score  = await calculPlayerScore(elle)
+lui.score  = await calculPlayerScore(lui)
+iel.score  = 89098
+let registre = {}
+
+await registerRound(registre, players)
+console.log(registre)
+await writejson(registre, "title.json")
 */
-// works

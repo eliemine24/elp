@@ -10,17 +10,22 @@ console.log(books)
 */
 const fs = require("fs")
 //write scores
-const scores =
+let scores =
 {
     "valentin": 0,
     "lea" : 0,
     "elie" : 0
 }
+
+scores["gerald"] = 5
+
+console.log(scores)
 // turn scores into json data
 const jscores = JSON.stringify(scores, null, 2);
 // write json file
 
-async function writejson(data, title="unnamed.json") {
+async function writejson(register, title="unnamed.json") {
+    const data = JSON.stringify(register, null, 2);
     fs.writeFile(title, data, 'utf8', (err) => {
         if (err) {
             console.error('Error writing to file', err)
@@ -30,7 +35,7 @@ async function writejson(data, title="unnamed.json") {
     })
 }
 
-writejson(jscores, "scores.json")
+// writejson(jscores, "scores.json")
 
 
 /*

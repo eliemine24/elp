@@ -196,12 +196,10 @@ export class Game{
         let dupli = false
         for (let i in hand) {
             // Don't count Second Chance cards as duplicates with themselves
-            if (card.value === "second chance" && hand[i].value === "second chance") {
-                continue;
-            }
-            
-            if (card.value == hand[i].value) {
-                dupli = true
+            if (card.type==="number") {
+                if (card.value == hand[i].value) {
+                    dupli = true
+                }
             }
         }
         return dupli
