@@ -11,9 +11,13 @@ export async function calculPlayerScore(player) {
 
     const hand = player.hand
 
-    let score = 0
     let bonus = 0
     let multiplier = 1
+    let score = 0
+
+    if (player.state == "WINNING") {
+        score += 15
+    }
 
     for (let i in hand){
         
