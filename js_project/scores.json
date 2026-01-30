@@ -1,106 +1,32 @@
 {
-  "manche1": {
+  "manche 1": {
     "valentin": {
       "score": 0,
       "hand": [
-        5,
+        1,
+        "+6",
         7,
-        9,
-        7
-      ]
-    },
-    "lea": {
-      "score": 40,
-      "hand": [
-        11,
-        10,
-        7,
-        12
-      ]
-    },
-    "elie": {
-      "score": 21,
-      "hand": [
-        4,
-        6,
-        11
-      ]
-    }
-  },
-  "manche2": {
-    "valentin": {
-      "score": 0,
-      "hand": [
-        9,
-        10,
-        10
-      ]
-    },
-    "lea": {
-      "score": 40,
-      "hand": [
-        11,
-        11
-      ]
-    },
-    "elie": {
-      "score": 21,
-      "hand": [
         8,
-        5,
-        9,
-        9
-      ]
-    }
-  },
-  "manche3": {
-    "valentin": {
-      "score": 11,
-      "hand": [
-        11
-      ]
-    },
-    "lea": {
-      "score": 40,
-      "hand": [
-        10,
-        7,
-        6,
-        11,
-        7
-      ]
-    },
-    "elie": {
-      "score": 29,
-      "hand": [
         8
       ]
-    }
-  },
-  "manche4": {
-    "valentin": {
-      "score": 11,
-      "hand": [
-        12,
-        11,
-        8,
-        "freeze"
-      ]
     },
     "lea": {
-      "score": 62,
+      "score": 18,
       "hand": [
-        12,
-        7,
-        3
+        9,
+        "second chance",
+        5,
+        4
       ]
     },
     "elie": {
-      "score": 52,
+      "score": 41,
       "hand": [
         8,
-        3,
-        12
+        "second chance",
+        12,
+        10,
+        11
       ]
     }
   }

@@ -3,11 +3,15 @@ import { askUser } from "./AskUser.js"
 export async function applyCardEffect(game, player, card) {
   
   if (card.value === "freeze") {
-    return await applyFreeze(game, player);
+    let t = await chooseTarget(game)
+    if (t === -1) {console.log("error")}
+    return await applyFreeze(game, game.players[t]);
   }
   
   else if (card.value === "flip three") {
-    return await applyFlipThree(game, player);
+    let t = await chooseTarget(game)
+    if (t === -1) {console.log("error")}
+    return await applyFlipThree(game, game.players[t]);
   }
   
   else if (card.value === "second chance") {
@@ -272,6 +276,21 @@ async function choosePlayer(validPlayers, currentPlayer) {
   }
   
   return target;
+}
+
+async function chooseTarget(game) {   
+  let valid = false
+  let target_indice = -1
+    while (valid==false) {
+      const target = await askUser("designate target among players : ") //!\\ askuSer question to use as a python input() function !!! (await indispensable)
+      for (let i in game.players) {
+        if (target == game.players[i].name) {
+          valid = true
+          target_indice = i 
+          }
+        }
+      }
+      return target_indice
 }
 
 export { 
