@@ -1,7 +1,7 @@
 import { askUser } from "./AskUser.js"
 import { Card, shuffle, makeDeck } from "./Cards.js"
 import { Player } from "./Player.js"
-import { calculPlayerScore } from "./Scores.js"
+import { calculPlayerScore, registerRound, writejson } from "./Scores.js"
 import { applyCardEffect, countNumberedCards } from "./Actions.js"
 
 // === Gaming functions ===
@@ -17,6 +17,8 @@ export class Game{
         this.round_ = false
         this.game_ = false
         this.dealer_indice = 0
+        this.register = {}
+        this.roundindice = 1
     }
 
     async init() {
@@ -224,11 +226,19 @@ export class Game{
             console.log(this.players[i].name, ":", this.players[i].score)
             // store hand in json file
             // free player's hand (including Second Chance cards that weren't used)
-            await this.discardHand(this.players[i].hand)
             this.players[i].state = "ACTIVE"
             
             // Move to next dealer
             this.players[i].dealer = false;
+        }
+        // save game in register
+        this.register = await registerRound(this.register, this.players, this.roundindice)
+        this.roundindice+=1
+        //rewrite json file
+        writejson(this.register, "scores.json")
+        
+        for (let i in this.players) {
+            await this.discardHand(this.players[i].hand)
         }
         
         // Next dealer
