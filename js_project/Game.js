@@ -156,7 +156,8 @@ export class Game{
             // Check again if player has 7 numbered cards after drawing
             if (countNumberedCards(this.players[i].hand) >= 7) {
                 console.log(`${this.players[i].name} now has 7 numbered cards! They stay.`);
-                this.players[i].state = "STAYING";
+                this.players[i].state = "WINNING";
+                await this.roundEnd();
             }
         }
     }
