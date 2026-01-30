@@ -134,7 +134,7 @@ export class Game{
             
             // â†’ compare with previous card (check for duplicates)
             // Special handling for Second Chance - checked within applyCardEffect
-            if (new_card.type !== "action" || new_card.value !== "second chance") {
+            if (new_card.type !== "action" || new_card.type !== "bonus") {
                 if (await this.hasDuplicate(this.players[i].hand, new_card)) {
                     // add to hand
                     this.players[i].addCard(new_card)
@@ -196,11 +196,6 @@ export class Game{
     async hasDuplicate(hand, card) {
         let dupli = false
         for (let i in hand) {
-            // Don't count Second Chance cards as duplicates with themselves
-            if (card.value === "second chance" && hand[i].value === "second chance") {
-                continue;
-            }
-            
             if (card.value == hand[i].value) {
                 dupli = true
             }
