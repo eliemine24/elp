@@ -1,41 +1,22 @@
 # js_project
 
-lien vers [npm](https://www.npmjs.com/)
+Implémenter un jeu de Flip 7 en JavaScript
 
-lien vers [le sujet](https://github.com/sfrenot/javascript/tree/master/projet4)
+Valentin-Jules DUMAS, Léa DANOBER, Élie GAUTIER
 
-lien vers [les règles du jeu](https://media.play-in.com/pdf/rules_games/flip_7_fr.pdf)
+## Ressources 
 
-**Todooo**
+- [le sujet](https://github.com/sfrenot/javascript/tree/master/projet4)
 
-- No html pas de carte qui flip (la tuile)
-- modéliser un jeu de carte
-    - fonctions associées :
-    - piocher
-    - mélanger
-    - défausse
-- modéliser les **joueurs** : liste 
-- modéliser les jeux des joueurs : écrire dans un fichier séparé  : function: add_card(player, card)
-- fonction de **comparaison des cartes** (si deux identiques → True)
-- fonction **tour** pour chaque joueur, premier tour = le jouer reste forcément
-- **calcul de score** (pour une manche = tester la fin de partie) : lecture du fichier des jeux des joueur·se·s
+- [les règles du jeu](https://media.play-in.com/pdf/rules_games/flip_7_fr.pdf)
 
-- **calcul de score** du total des manches : lecture du fichier retraçant l'historique des manches 
+## Utilisation
 
-## Description d'une partie
+Avec node JS installé, lancer Game.js depuis le dossier local : 
+```bash
+~./js_project$ node Game.js
+```
 
-**conditions de départ** : nombre joueurs, scores à 0, jeu complet et mélangé.
+Désigner un premier donneur, pour lancer la partie.
 
-### Manche
-
-1. **Premier tour** : tour spécial, distribuer une carte à chaque joueur et appliquer les actions
-2. **Suite du jeu** Répéter jusqu'à : un joueur a 7 cartes OU il n'ya plus de joueur actif
-    - joueur après joueur : 
-        - joueur choisi si il tire une carte ou pas
-        - si il quitte : changer l'état du joueur 
-        - si il reste : 
-        - vérifier si il reste des cartes, sinon mélanger
-        - piocher une carte
-        - effectuer l'action : comparer les cartes / actions spéciales (à détailler)
-3. écrire les scores dans un fichier
-4. calculer le total des score (si 200 ou plus → game over)
+Toutes les données de la parties (joueurs, scores, cartes tirées) s'enregistrent au fur et à mesure dans le fichier json "scores.json", enregistré dans le dossier local. La partie s'arrête quand un jouer atteind 200 points
