@@ -43,7 +43,7 @@ export async function calculPlayerScore(player) {
     return (score*multiplier + bonus)
 }
 
-export async function registerRound(register, players) {
+export async function registerRound(register, players, roundindice) {
     // saves round info in a {}
     let manche = {}
     for (let i in players) {
@@ -54,7 +54,7 @@ export async function registerRound(register, players) {
             manche[players[i].name]["hand"].push(players[i].hand[j].value)
         }
     }
-    register["manche"] = manche
+    register["manche "+roundindice] = manche
     return register
 }
 
@@ -67,8 +67,6 @@ export async function writejson(register, title="unnamed.json") {
     writeFile(title, data, 'utf8', (err) => {
         if (err) {
             console.error('Error writing to file', err)
-        } else {
-            console.log(`Data written to file ${title}`)
         }
     })
 }
