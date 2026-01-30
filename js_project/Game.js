@@ -101,7 +101,6 @@ export class Game{
             
             // Add card to hand
             this.players[i].addCard(new_card)
-            this.players[i].addCard(new Card("second chance", "action"))  //////////////////////////////////////////////:
             
             // Apply card effect if it's an action card
             if (new_card.type === 'action') {
