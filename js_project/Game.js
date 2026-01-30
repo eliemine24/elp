@@ -99,6 +99,7 @@ export class Game{
             
             // Add card to hand
             this.players[i].addCard(new_card)
+            this.players[i].addCard(new Card("second chance", "action"))  //////////////////////////////////////////////:
             
             // Apply card effect if it's an action card
             if (new_card.type === 'action') {
@@ -136,10 +137,24 @@ export class Game{
             // Special handling for Second Chance - checked within applyCardEffect
             if (new_card.type !== "action" || new_card.type !== "bonus") {
                 if (await this.hasDuplicate(this.players[i].hand, new_card)) {
-                    // add to hand
-                    this.players[i].addCard(new_card)
-                    this.players[i].state = "OUT";
-                    console.log("You are out for this round")
+                    // check if player has a second chance card
+                    const hasSecondChance = this.players[i].hand.some(c => c.value == "second chance");
+                    if (hasSecondChance === true) {
+                        // Remove the extra second chance from hand
+                        const scIndex = this.players[i].hand.findIndex(c => c.value === "second chance");
+                        if (scIndex !== -1) {
+                        this.players[i].hand.splice(scIndex, 1);
+                        }
+                        this.discardPile.push(new Card("second chance", "action"));
+                        this.discardPile.push(new_card);
+                        console.log("Saved by your second chance card")
+                    }
+                    else {
+                        // add to hand
+                        this.players[i].addCard(new_card)
+                        this.players[i].state = "OUT";
+                        console.log("You are out for this round")
+                    }
                     return;
                 }
             }
